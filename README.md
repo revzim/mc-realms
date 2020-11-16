@@ -20,6 +20,7 @@
       }
     } else {
       console.log("err:", data.error);
+      // EX: { error: 'Retry again later', servers: null }
     }
   })
 ```
