@@ -91,35 +91,73 @@ const object_data = {
   sid = `token:${data.accessToken}:${data.selectedProfile.id}`,
 }
 */
-let getRealmAddr = (username, password, version=VERSION, cb) =>{
+let getRealmsAddrs = (username, password, version=VERSION, cb) =>{
   login(username, password, data=>{
     if (data.data) findRealm(username, version, data.data.sid, "/worlds", (worlds_resp)=>{
       if (worlds_resp.body) {
         const body = JSON.parse(worlds_resp.body);
         const resp_servers = body.servers; // ARRAY OF SERVERS
-        const first_server_world_id = resp_servers[0].id;
-        findRealm(username, version, data.data.sid, `/worlds/v1/${first_server_world_id}/join/pc`, (join_resp)=>{
-          if (join_resp.error === 'Retry again later') cb({ error: join_resp.error, server: null })
-          try {
-            const first_world_server_resp = JSON.parse(join_resp.body);
-            const first_world_server_addr = first_world_server_resp.address.split(":");
-            cb({
-              error: null,
-              server: {
-                host: first_world_server_addr[0],
-                port: first_world_server_addr[1],
-              },
-            });
-          } catch (e) {
-            cb({
-              error: e,
-              server: null,
-            })
+        const servers = {};
+        /*
+          {
+            id: 000000,
+            remoteSubscriptionId: 'TEST',
+            owner: 'TEST OWNER',
+            ownerUUID: 'TEST',
+            name: 'TEST NAME',
+            motd: "TEST MOTD",
+            defaultPermission: 'MEMBER',
+            state: 'OPEN',
+            daysLeft: 0,
+            expired: false,
+            expiredTrial: false,
+            gracePeriod: false,
+            worldType: 'NORMAL',
+            players: null,
+            maxPlayers: 10,
+            minigameName: null,
+            minigameId: null,
+            minigameImage: null,
+            activeSlot: 1,
+            slots: null,
+            member: false,
+            clubId: null,
+            // SPECIAL ADDITION
+            addr: {
+              host: "localhost", // STRING HOST OF REALM SERVER
+              port: 12345 // NUMBER PORT OF REALM SERVER
+            }
           }
-        });
+        */
+        for (const server of resp_servers) {
+          findRealm(username, version, data.data.sid, `/worlds/v1/${server.id}/join/pc`, (join_resp)=>{
+            if (join_resp.body === 'Retry again later') {
+              cb({ error: join_resp.body, servers: null });
+            } else {
+              try {
+                const server_resp = JSON.parse(join_resp.body);
+                const server_addr = server_resp.address.split(":");
+                server.addr = {
+                  host: server_addr[0],
+                  port: server_addr[1],
+                }
+                servers[server.name] = server;
+                
+                if (Object.keys(servers).length == resp_servers.length) {
+                  cb({
+                    servers: servers,
+                    error: null,
+                  })
+                }
+              } catch (e) {
+                console.log(`err with server: ${server.id}:`, e);
+              }
+            }
+          });
+        }
       }
     });
   });
 }
 
-module.exports.GetRealmAddress = getRealmAddr;
+module.exports.GetRealmsAddrs = getRealmsAddrs;
