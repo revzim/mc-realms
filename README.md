@@ -8,7 +8,7 @@
 * find the server address of a minecraft realm
 * use the address with [mineflayer](https://github.com/PrismarineJS/mineflayer) to create minecraft bots
 ```javascript
-  const {GetRealmAddress} = require('mc-realms');
+  const {GetRealmsAddrs} = require('mc-realms');
   // USERNAME = EMAIL FOR MINECRAFT
   GetRealmsAddrs(username, password, version, data=>{
     // console.log(data);
