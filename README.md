@@ -15,8 +15,8 @@
     if (!data.error) {
       const servers = data.servers;
       for (const [server_name, server_object] of Object.entries(servers)) {
-        console.log(`${server_name} id: ${server_object.id}`);
-        // EX: REVZIM'S COOL SERVER id: 01234567 
+        console.log(`${server_name} id: ${server_object.id} addr: ${server_object.addr.host}:${server_object.addr.port}`);
+        // EX: REVZIM'S COOL SERVER id: 01234567 addr: 123.45.6.789:12345 
       }
     } else {
       console.log("err:", data.error);
