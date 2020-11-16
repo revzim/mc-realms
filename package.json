@@ -1,6 +1,6 @@
 {
   "name": "mc-realms",
-  "version": "0.0.1",
+  "version": "0.0.12",
   "description": "simple node api wrapper for minecraft realms",
   "main": "index.js",
   "repository": "https://github.com/revzim/mc-realms",
