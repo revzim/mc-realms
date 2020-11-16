@@ -60,7 +60,7 @@
     ServerName: {
       id: 0123456,
       remoteSubscriptionId: '00000000000000000000000',
-      owner: 'OnwerName',
+      owner: 'OwnerName',
       ownerUUID: '00000000000000000000000000000',
       name: 'ServerName',
       motd: "Server MOTD",
