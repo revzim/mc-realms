@@ -21,6 +21,7 @@ export class PRealms {
     * & ON ANY RE-ATTEMPT TO AUTH
     * username = STRING USERNAME
     * version = STRING MINECRAFT VERSION 
+    * name = STRING NAME
     * sid = STRING token:<token>:<uuid> 
     * SPECIFIC TO AUTHENTICATING WITH REALM
     * <token> = YGG TOKEN FROM AUTH
@@ -28,6 +29,7 @@ export class PRealms {
   */
   username: string;
   uuid: string;
+  name: string;
   auth_cache: AuthCache;
   authenticated: boolean;
   version: string;
@@ -35,6 +37,7 @@ export class PRealms {
   constructor(username: string, version: string) {
     this.username = username;
     this.uuid = "";
+    this.name = "";
     this.auth_cache = {
       tokens: {
         access: "",
@@ -66,6 +69,7 @@ export class PRealms {
         this.auth_cache.tokens.access = data.accessToken;
         this.auth_cache.tokens.client = data.clientToken;
         this.auth_cache.sid = `token:${data.accessToken}:${data.selectedProfile.id}`;
+        this.name = data.selectedProfile.name;
         this.authenticated = true;
         resolve({
           success: true,

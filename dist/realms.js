@@ -10,6 +10,7 @@ class Realms {
     constructor(username, version) {
         this.username = username;
         this.uuid = "";
+        this.name = "";
         this.auth_cache = {
             tokens: {
                 access: "",
@@ -40,6 +41,7 @@ class Realms {
                 this.auth_cache.tokens.access = data.accessToken;
                 this.auth_cache.tokens.client = data.clientToken;
                 this.auth_cache.sid = `token:${data.accessToken}:${data.selectedProfile.id}`;
+                this.name = data.selectedProfile.name;
                 this.authenticated = true;
                 cb({
                     error: null,
@@ -49,6 +51,7 @@ class Realms {
                         accessToken: data.accessToken,
                         clientToken: data.clientToken,
                         sid: `token:${data.accessToken}:${data.selectedProfile.id}`,
+                        name: data.selectedProfile.name,
                     },
                 });
             }

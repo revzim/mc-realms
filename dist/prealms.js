@@ -10,6 +10,7 @@ class PRealms {
     constructor(username, version) {
         this.username = username;
         this.uuid = "";
+        this.name = "";
         this.auth_cache = {
             tokens: {
                 access: "",
@@ -39,6 +40,7 @@ class PRealms {
                 this.auth_cache.tokens.access = data.accessToken;
                 this.auth_cache.tokens.client = data.clientToken;
                 this.auth_cache.sid = `token:${data.accessToken}:${data.selectedProfile.id}`;
+                this.name = data.selectedProfile.name;
                 this.authenticated = true;
                 resolve({
                     success: true,
