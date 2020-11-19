@@ -1,14 +1,24 @@
 {
   "name": "mc-realms",
-  "version": "0.0.12",
-  "description": "simple node api wrapper for minecraft realms",
+  "version": "0.0.15",
+  "description": "simple node wrapper for the minecraft realms api",
   "main": "index.js",
   "repository": "https://github.com/revzim/mc-realms",
   "author": "revzim",
   "scripts": {
     "start": "node index.js",
-    "test": "node tests/auth.test.js"
+    "test": "node tests/auth.test.js",
+    "testo": "node tests/old.test.js",
+    "testp": "node tests/prealms.test.js",
+    "testr": "node tests/realms.test.js",
+    "testpk": "node tests/packaged.test.js"
   },
+  "keywords": [
+    "minecraft",
+    "mineflayer",
+    "realm",
+    "realms"
+  ],
   "license": "MIT",
   "dependencies": {
     "request": "^2.88.2",
