@@ -10,7 +10,7 @@
     "build": "tsc",
     "start": "node lib/index.js",
     "test": "node tests/index.js",
-    "pkg": "pkg --output build/heroku-mcrealms ."
+    "pkg": "pkg --output build/mc-realms-app ."
   },
   "bin": "lib/index.js",
   "pkg": {
