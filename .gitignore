@@ -1,0 +1,5 @@
+**.txt
+/lib
+/node_modules
+.env
+/tests

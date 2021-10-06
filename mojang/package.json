@@ -1,0 +1,17 @@
+{
+  "name": "mc-realms",
+  "version": "0.1.0",
+  "description": "simple node api wrapper for minecraft realms",
+  "main": "index.js",
+  "repository": "https://github.com/revzim/mc-realms",
+  "author": "revzim",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node tests/auth.test.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.2",
+    "yggdrasil": "^1.3.0"
+  }
+}
