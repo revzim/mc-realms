@@ -24,6 +24,8 @@
 - *written in a day, so expect changes.*
 ```
 
+#### *[looking for the source code pre account migration?][10]*
+
 #
 ## IMPORTANT:
 ### mojang => microsoft account migrations
@@ -38,7 +40,6 @@
   6. minecraft auth => check ownership of game
   7. user authenticated and can now get profile/realm/server info
 - the microsoft oauth flow is documented on the [wiki][4]
-- *[looking for the source code pre account migration?][10]*
 
 ## [mc-realms app][3]
 - due to the microsoft oauth flow differing from the mojang oauth flow, the authentication process pipeline is broken once migrating accounts
