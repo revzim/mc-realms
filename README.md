@@ -1,7 +1,6 @@
 # [mc-realms repo][1]
 
 ## simple server/web app and node wrapper for the [Minecraft Realms API][2]
-*[pre account migration repo][10]*
 
 ## [mc-realms server/webapp][3]
 - heroku hosted web server and api example to ease authentication flow with newly migrated microsoft accounts
@@ -39,6 +38,7 @@
   6. minecraft auth => check ownership of game
   7. user authenticated and can now get profile/realm/server info
 - the microsoft oauth flow is documented on the [wiki][4]
+- *[looking for the repo pre account migration?][10]*
 
 ## [mc-realms app][3]
 - due to the microsoft oauth flow differing from the mojang oauth flow, the authentication process pipeline is broken once migrating accounts
