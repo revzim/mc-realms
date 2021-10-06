@@ -1,6 +1,7 @@
 # [mc-realms repo][1]
 
 ## simple server/web app and node wrapper for the [Minecraft Realms API][2]
+*[pre account migration repo][10]*
 
 ## [mc-realms server/webapp][3]
 - heroku hosted web server and api example to ease authentication flow with newly migrated microsoft accounts
@@ -78,7 +79,7 @@
 
 
 ## [pre account migration readme][7]
-- source code prior to microsoft account migration moved to `/mojang`
+- source code prior to microsoft account migration moved to [/mojang][10]
 
 
 <!-- LINKS -->
@@ -92,6 +93,7 @@
 [7]: ./README_PREMIGRATE.md
 [8]: #hosted-mc-realms-app
 [9]: #api-endpoints
+[10]: ./mojang/
 
 
 #### author
