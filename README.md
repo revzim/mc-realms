@@ -1,11 +1,8 @@
-# [mc-realms repo][1]
-
-## simple server/web app and node wrapper for the [Minecraft Realms API][2]
-
-## [mc-realms server/webapp][3]
+# [mc-realms repo][1] | [mc-realms server/webapp][3]
 - heroku hosted web server and api example to ease authentication flow with newly migrated microsoft accounts
 - [info][8] about the web app
 
+## simple server/web app and node wrapper for the [Minecraft Realms API][2]
 
 ## API ENDPOINTS
 - all `mc-realms` api requests besides `/` require a `token` query param
