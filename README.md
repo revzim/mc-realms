@@ -65,8 +65,8 @@
 - `REDIRECT_URI` => a valid redirect uri for your azure application
   - default is `http://localhost/token` to emulate how the [mc-realms][3] web app works
   - within the context of this server, unless you are altering any of the source code, redirect uris should follow the paradigm `host/token` to work ootb
-- run dev: `yarn dev`
-- build: `yarn build` => `yarn start`
+- run dev: `yarn dev` || `npm run dev`
+- build: `yarn build` || `npm run build` => `yarn start` || `npm run start`
 - head to http://localhost
 - [API ENDPOINTS][9]
 
