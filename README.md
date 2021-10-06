@@ -91,7 +91,7 @@
 [5]: https://azure.microsoft.com/en-us/
 [6]: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
 [7]: ./README_PREMIGRATE.md
-[8]: #hosted-mc-realms-app
+[8]: #mc-realms-app
 [9]: #api-endpoints
 [10]: ./mojang/
 
