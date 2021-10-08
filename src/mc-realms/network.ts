@@ -6,15 +6,20 @@ export interface NetRequestOptions {
   data?: any
 }
 
+export const METHODS: Record<string, string> = {
+  GET: "get",
+  POST: "post"
+}
+
 export function req(method: string, opts: NetRequestOptions): Promise<any> {
   return new Promise(async (resolve, reject) => {
     try {
       let params;
       switch (method) {
-        case "get":
+        case METHODS.GET:
           params = [opts.uri, opts.headers]
           break
-        case "post":
+        case METHODS.POST:
           params = [opts.uri, opts.data, opts.headers]
           break
         default:

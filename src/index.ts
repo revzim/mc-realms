@@ -2,7 +2,7 @@ import { join } from "path"
 import { blue, red } from "chalk"
 import { MSFTMCRealms } from "./mc-realms"
 import { mcerr } from "./mc-realms/errors"
-import express, { Application } from "express"
+import express, { Application, Request, Response } from "express"
 import { config } from "dotenv"
 
 config()
@@ -13,17 +13,26 @@ const app: Application = express()
 
 // app.use(cors())
 app.use(express.json())
-// app.use(express.static(join(__dirname, "../public")))
+// app.use(express.static(join(__dirname, process.env.STATIC_PATH)))
 
+const ROUTES: Record<string, string> = {
+  BASE: "/",
+  TOKEN: "token",
+  PROFILE: "profile",
+  WORLDS: "worlds",
+  USERDATA: "userdata",
+  AZUREVERIFY: ".well-known/microsoft-identity-association.json"
+}
 
-const mcRealmRouteGroup = "/" // "/mc-realms/"
-app.get(mcRealmRouteGroup, (req, res) => {
-  // console.log(req.body)
-  // console.log(msftmcrealmsapp.getOAuthURI())
+function routeBuilder(route?: string): string {
+  return route ? `${ROUTES.BASE}${route}` : ROUTES.BASE
+}
+
+app.get(routeBuilder(), (req: Request, res: Response) => {
   res.redirect(302, msftmcrealmsapp.getOAuthURI())
 })
 
-app.get(`${mcRealmRouteGroup}token`, async (req, res) => {
+app.get(routeBuilder(ROUTES.TOKEN), async (req: Request, res: Response) => {
   const msftCode = req.query.code
   if (msftCode && typeof msftCode === "string" && msftCode !== "") {
     try {
@@ -31,7 +40,6 @@ app.get(`${mcRealmRouteGroup}token`, async (req, res) => {
       res.json(resp)
     } catch (e: any) {
       console.log("token err:", e)
-      
       res.json({ error: mcerr.parser(e) })
     }
   } else {
@@ -40,7 +48,7 @@ app.get(`${mcRealmRouteGroup}token`, async (req, res) => {
   }
 })
 
-app.get(`${mcRealmRouteGroup}profile`, async (req, res) => {
+app.get(routeBuilder(ROUTES.PROFILE), async (req: Request, res: Response) => {
   // const authCode = req.headers.authorization || req.query.token
   const authCode = req.query.token
   if (authCode && typeof authCode === "string" && authCode !== "") {
@@ -58,16 +66,16 @@ app.get(`${mcRealmRouteGroup}profile`, async (req, res) => {
   }
 })
 
-async function getWorlds(authCode: string) {
+async function getWorlds(authCode: string, version = msftmcrealmsapp.DEFAULT_MC_VERSION) {
   const profileResp = await msftmcrealmsapp.getProfile(authCode)
-  const worldsResp = await msftmcrealmsapp.query("/worlds", authCode, profileResp.id, profileResp.name, "1.17.1")
+  const worldsResp = await msftmcrealmsapp.query("/worlds", authCode, profileResp.id, profileResp.name, version)
   return {
     worlds: worldsResp,
     profile: profileResp,
   }
 }
 
-app.get(`${mcRealmRouteGroup}worlds`, async (req, res) => {
+app.get(routeBuilder(ROUTES.WORLDS), async (req: Request, res: Response) => {
   // const authCode = req.headers.authorization || req.query.token
   const authCode = req.query.token
   if (authCode && typeof authCode === "string" && authCode !== "") {
@@ -84,10 +92,11 @@ app.get(`${mcRealmRouteGroup}worlds`, async (req, res) => {
   }
 })
 
-app.get(`${mcRealmRouteGroup}userdata`, async (req, res) => {
+app.get(routeBuilder(ROUTES.USERDATA), async (req: Request, res: Response) => {
   // const authCode = req.headers.authorization || req.query.token
   const authCode = req.query.token
-  if (authCode && typeof authCode === "string" && authCode !== "") {
+  const mcVersion = req.query.version || msftmcrealmsapp.DEFAULT_MC_VERSION
+  if (authCode && typeof authCode === "string" && authCode !== "" && typeof mcVersion === "string") {
     try {
       const worldsResp = await getWorlds(authCode)
       if (worldsResp.worlds && worldsResp.worlds.servers) {
@@ -98,7 +107,7 @@ app.get(`${mcRealmRouteGroup}userdata`, async (req, res) => {
         const addrs: Record<string, any> = {}
         for (const server of worldServers) {
           // console.log(server)
-          const resp = await msftmcrealmsapp.query(`/worlds/v1/${server.id}/join/pc`, authCode, profile.id, profile.name, "1.17.1")
+          const resp = await msftmcrealmsapp.query(`/worlds/v1/${server.id}/join/pc`, authCode, profile.id, profile.name, mcVersion)
           // console.log("addr:", resp)
           const addrStr: string = resp.address
           const splitAddr: string[] = addrStr.split(":") // HOST, PORT
@@ -135,7 +144,17 @@ app.get(`${mcRealmRouteGroup}userdata`, async (req, res) => {
   }
 })
 
+// AZURE DOMAIN VERIFICATION SERVICE
+app.get(routeBuilder(ROUTES.AZUREVERIFY), (req: Request, res: Response) => {
+  res.json({
+    associatedApplications: [
+      {
+        applicationId: process.env.CLIENT_ID
+      }
+    ]
+  })
+})
+
 app.listen(process.env.PORT, ()=>{
-  // JSON.stringify(app.settings)
   console.log(blue(`server listening at: ${process.env.PORT}`))
 })

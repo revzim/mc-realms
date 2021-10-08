@@ -6,6 +6,8 @@
 
 ## API ENDPOINTS
 - all `mc-realms` api requests besides `/` require a `token` query param
+- optional query params:
+  - `version`: minecraft version (current default: 1.17.1)
 - `/`
   - GET request => registering & granting auth to azure app
   - redirects to `/token?code=<CODE>`
@@ -15,7 +17,7 @@
 - `/worlds?token=<TOKEN>`
   - GET request => user account realms
 - `/userdata?token=<TOKEN>`
-  - GET request => user account profile & realm information 
+  - GET request => user account profile & realm information
 - *`<TOKEN>` is your minecraft access token you either parsed or received earlier throughout the oauth flow process*
 - *written in a day, so expect changes.*
 

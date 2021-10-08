@@ -2,7 +2,7 @@ const HashMisMatch = "auth err: microsoft and minecraft hashes dont match"
 
 const GenericToken = "no auth code present in response"
 
-const GenericTryAgain = "the minecraft api seems to be overwhelmed! try again in 60s. thank you :D"
+const GenericTryAgain = "the minecraft realms api seems to be overwhelmed! try again in 60s. thank you :D"
 
 function parser(e: any) {
   if (e.response && e.response.data) {

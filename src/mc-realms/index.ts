@@ -1,4 +1,4 @@
-import { NetRequestOptions, req } from "./network"
+import { NetRequestOptions, req, METHODS } from "./network"
 import { mcerr } from "./errors"
 import { HEADERS } from "./headers"
 
@@ -74,6 +74,8 @@ export class MSFTMCRealms {
 
   CLIENT_ID: string = process.env.CLIENT_ID
 
+  DEFAULT_MC_VERSION: string = process.env.DEFAULT_MC_VERSION
+
   constructor (clientID: string) {
     this.OAUTHCODE_URL_PARAMS.client_id = clientID
     this.oauthURI = this.initOAuthURI()
@@ -85,12 +87,12 @@ export class MSFTMCRealms {
     const domain: string = "https://pc.realms.minecraft.net"
     const headers = Object.assign({}, HEADERS.json)
     const cookie = `sid=token:${token}:${id};user=${username};version=${version}`
-    headers["Cookie"] = cookie
+    headers.Cookie = cookie
     const opts: NetRequestOptions = {
       uri: `${domain}${subdomain}`,
       headers: {headers},
     }
-    return req("get", opts)
+    return req(METHODS.GET, opts)
   }
 
   // FULL AUTH FLOW MSFT->MC
@@ -100,23 +102,23 @@ export class MSFTMCRealms {
       headers: HEADERS.url,
       data: this.initAuthTokenParams(code)
     }
-    const authcodeResp = await req("post", opts)
+    const authcodeResp = await req(METHODS.POST, opts)
     opts.uri = this.MSFT_XBL_AUTH_ENDPOINT
     opts.data = this.initXBLPayload(authcodeResp.access_token)
     opts.headers = HEADERS.json
-    const authXBLResp = await req("post", opts)
+    const authXBLResp = await req(METHODS.POST, opts)
     const tkn: string = authXBLResp.Token
     const hsh: string = authXBLResp.DisplayClaims.xui[0].uhs
     opts.uri = this.MSFT_XSTS_AUTH_ENDPOINT
     opts.data = this.initXSTSPayload(tkn)
-    const authXSTSResp = await req("post", opts)
+    const authXSTSResp = await req(METHODS.POST, opts)
     const xstsToken = authXSTSResp.Token
     const xstsHash = authXSTSResp.DisplayClaims.xui[0].uhs
-    if (xstsHash === hsh) { // SIMPLE HASH CHECK
+    if (xstsHash === hsh) { // SIMPLE VERIFY HASH CHECK
       // HASHES ARE SAME CONTINUE
       opts.uri = this.MSFT_MCXBL_AUTH_ENDPOINT
       opts.data = this.initMCXBLAuthPayload(xstsHash, xstsToken)
-      const authMCResp = await req("post", opts)
+      const authMCResp = await req(METHODS.POST, opts)
       const isOwnerResp = await this.isOwner(authMCResp.access_token)
       // console.log(isOwnerResp)
       if (isOwnerResp) {
@@ -139,7 +141,7 @@ export class MSFTMCRealms {
       uri: this.MC_PROFILE_ENDPOINT,
       headers: { headers },
     }
-    return req("get", opts)
+    return req(METHODS.GET, opts)
   }
 
   isOwner(token: string): Promise<any> {
@@ -148,7 +150,7 @@ export class MSFTMCRealms {
       uri: this.MC_PROFILE_ENDPOINT,
       headers: { headers },
     }
-    return req("get", opts)
+    return req(METHODS.GET, opts)
   }
 
   initOAuthURI(): string {
