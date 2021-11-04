@@ -1,6 +1,7 @@
-# [mc-realms repo][1] | [mc-realms server/webapp][3] (*down - free azure membership ended*)
+# [mc-realms repo][1] | [mc-realms server/webapp][3]
 - heroku hosted web server and api example to ease authentication flow with newly migrated microsoft accounts
 - [info][8] about the web app
+- (*down - free azure membership ended*)
 
 ## simple server/web app and node wrapper for the [Minecraft Realms API][2]
 
